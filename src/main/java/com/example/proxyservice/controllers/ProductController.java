@@ -13,6 +13,7 @@ public class ProductController {
     public ProductController(IProductService productService){
         this.productService = productService;
     }
+
     @GetMapping("")
     public String getProducts(){
         return "products";
@@ -29,6 +30,11 @@ public class ProductController {
     }
 
     @PutMapping("/{productId}")
+    public String replaceProduct(@PathVariable("productId") Long productId, @RequestBody ProductDto productDto){
+        return "update the entire product "+productId + " with these details " + productDto;
+    }
+
+    @PatchMapping("/{productId}")
     public String updateProduct(@PathVariable("productId") Long productId, @RequestBody ProductDto productDto){
         return "updating the product "+ productDto;
     }

@@ -17,9 +17,9 @@ public class CategoryController {
         return "new category added "+ categoryDto;
     }
 
-    @GetMapping("/{categoryId}")
-    public String getSingleCategory(@PathVariable("categoryId") Long categoryId){
-        return "single category " + categoryId;
+    @GetMapping("/{categoryName}")
+    public String getProductsOfSingleCategory(@PathVariable("categoryName") String categoryName){
+        return "single category " + categoryName;
     }
 
     @PutMapping("/{categoryId}")
