@@ -13,5 +13,5 @@ public class Product extends BaseModel{
     private String description;
     private String brand;
     private Categories category;
-    private String imageURL;
+    private String image;
 }
