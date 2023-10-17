@@ -1,12 +1,12 @@
 package com.example.proxyservice.models;
 
-import jakarta.persistence.Entity;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 @Getter
 @Setter
-@Entity
+@ToString
 public class Product extends BaseModel{
     private String title;
     private double price;

@@ -1,5 +1,6 @@
 package com.example.proxyservice.services;
 
+import com.example.proxyservice.dtos.ProductDto;
 import com.example.proxyservice.models.Product;
 import org.springframework.stereotype.Component;
 
@@ -11,9 +12,11 @@ public interface IProductService {
 
     Product getProductById(Long id);
 
-    Product createProduct(Product product);
+    Product createProduct(ProductDto productDto);
 
-    Product updateProduct(Product product);
+    Product updateProduct(Long productId, ProductDto productDto);
+
+    Product replaceProduct(Long productId, ProductDto productDto);
 
     Product deleteProduct(Long id);
 }

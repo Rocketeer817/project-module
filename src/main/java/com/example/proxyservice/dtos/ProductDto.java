@@ -11,9 +11,10 @@ import org.springframework.stereotype.Component;
 @ToString
 @Component
 public class ProductDto {
+    private Long id;
     private String title;
     private double price;
     private String description;
-    private Categories category;
+    private String category;
     private String image;
 }
