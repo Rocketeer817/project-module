@@ -13,14 +13,13 @@ import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 @Component
-public class FakeStoreClient {
+public class FakeStoreProductClient {
     private RestTemplateBuilder restTemplateBuilder;
 
-    public FakeStoreClient(RestTemplateBuilder restTemplateBuilder){
+    public FakeStoreProductClient(RestTemplateBuilder restTemplateBuilder){
         this.restTemplateBuilder = restTemplateBuilder;
     }
 
