@@ -1,0 +1,18 @@
+package com.example.proxyservice.dtos;
+
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
+import org.springframework.stereotype.Component;
+
+@Getter
+@Setter
+@ToString
+@Component
+public class ProductRequestDto {
+    private String title;
+    private double price;
+    private String description;
+    private String category;
+    private String image;
+}

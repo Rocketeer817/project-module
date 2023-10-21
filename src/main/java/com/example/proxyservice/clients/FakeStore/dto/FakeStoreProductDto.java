@@ -1,16 +1,14 @@
-package com.example.proxyservice.dtos;
+package com.example.proxyservice.clients.FakeStore.dto;
 
-import com.example.proxyservice.models.Categories;
+import com.example.proxyservice.clients.IClientDto;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-import org.springframework.stereotype.Component;
 
 @Getter
 @Setter
 @ToString
-@Component
-public class ProductDto {
+public class FakeStoreProductDto implements IClientDto {
     private Long id;
     private String title;
     private double price;

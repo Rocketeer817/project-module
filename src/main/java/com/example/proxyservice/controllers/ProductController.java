@@ -1,17 +1,17 @@
 package com.example.proxyservice.controllers;
 
-import com.example.proxyservice.dtos.ProductDto;
+import com.example.proxyservice.dtos.ProductRequestDto;
+import com.example.proxyservice.dtos.ProductResponseDto;
+import com.example.proxyservice.models.Categories;
 import com.example.proxyservice.models.Product;
+import com.example.proxyservice.services.FakeProductStoreService;
 import com.example.proxyservice.services.IProductService;
-import com.example.proxyservice.services.ProductService;
-import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.RestTemplate;
-import org.springframework.web.servlet.function.EntityResponse;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/products")
@@ -19,53 +19,91 @@ public class ProductController {
 
     private IProductService productService;
 
-    public ProductController(IProductService productService){
+    public ProductController(FakeProductStoreService productService){
         this.productService = productService;
     }
 
     @GetMapping("")
-    public ResponseEntity<List<Product>> getProducts(){
-        return new ResponseEntity<>(productService.getProducts(), HttpStatus.OK);
+    public ResponseEntity<List<ProductResponseDto>> getProducts(){
+         return new ResponseEntity<>(productService.getProducts().stream().map(product -> getProductDto(product)).collect(Collectors.toList()), HttpStatus.OK);
     }
 
     @PostMapping("/")
-    public ResponseEntity<Product> addProduct(@RequestBody ProductDto productDto){
-        return new ResponseEntity<>(productService.createProduct(productDto), HttpStatus.OK);
+    public ResponseEntity<ProductResponseDto> addProduct(@RequestBody ProductRequestDto productRequestDto){
+        return new ResponseEntity<>(getProductDto(productService.createProduct(getProduct(productRequestDto))), HttpStatus.OK);
     }
 
     @GetMapping("/{productId}")
-    public ResponseEntity<Product> getSingleProduct(@PathVariable("productId") Long productId){
+    public ResponseEntity<ProductResponseDto> getSingleProduct(@PathVariable("productId") Long productId)
+    {
 
         Product product = productService.getProductById(productId);
-        return new ResponseEntity<>(product, HttpStatus.OK);
+        return new ResponseEntity<>(getProductDto(product), HttpStatus.OK);
     }
 
     @PutMapping("/{productId}")
-    public ResponseEntity<Product> replaceProduct(@PathVariable("productId") Long productId, @RequestBody ProductDto productDto){
-        Product product = productService.updateProduct(productId,productDto);
-        return new ResponseEntity<>(product, HttpStatus.OK);
+    public ResponseEntity<ProductResponseDto> replaceProduct(@PathVariable("productId") Long productId, @RequestBody ProductRequestDto productRequestDto){
+        Product product = productService.updateProduct(productId,getProduct(productRequestDto));
+        return new ResponseEntity<>(getProductDto(product), HttpStatus.OK);
     }
 
     @PatchMapping("/{productId}")
-    public ResponseEntity<Product> updateProduct(@PathVariable("productId") Long productId, @RequestBody ProductDto productDto){
+    public ResponseEntity<ProductResponseDto> updateProduct(@PathVariable("productId") Long productId, @RequestBody ProductRequestDto productRequestDto){
         try{
-            Product product = productService.updateProduct(productId,productDto);
-            return new ResponseEntity<>(product, HttpStatus.OK);
+            Product product = productService.updateProduct(productId,getProduct(productRequestDto));
+            return new ResponseEntity<>(getProductDto(product), HttpStatus.OK);
         }
         catch(IllegalArgumentException e){
-            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+            throw e;
         }
     }
 
     @DeleteMapping("/{productId}")
-    public ResponseEntity<Product> deleteProduct(@PathVariable("productId") Long productId){
+    public ResponseEntity<ProductResponseDto> deleteProduct(@PathVariable("productId") Long productId){
         try{
             Product product = productService.deleteProduct(productId);
-            return new ResponseEntity<>(product, HttpStatus.OK);
+            return new ResponseEntity<>(getProductDto(product), HttpStatus.OK);
         }
         catch(IllegalArgumentException exception){
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            System.out.println(exception.toString());
+            throw exception;
         }
+    }
+
+    private Product getProduct(ProductRequestDto productRequestDto) {
+        Product product =  new Product() {
+            {
+                setTitle(productRequestDto.getTitle());
+                setPrice(productRequestDto.getPrice());
+                setDescription(productRequestDto.getDescription());
+                setImage(productRequestDto.getImage());
+            }
+        };
+
+        Categories category = new Categories();
+        category.setName(productRequestDto.getCategory());
+        product.setCategory(category);
+
+        return product;
+    }
+
+    private ProductResponseDto getProductDto(Product product){
+        ProductResponseDto productResponseDto = new ProductResponseDto(){
+            {
+                setId(product.getId());
+                setTitle(product.getTitle());
+                setPrice(product.getPrice());
+                setDescription(product.getDescription());
+                setImage(product.getImage());
+                setCategory(product.getCategory().getName());
+            }
+        };
+        return productResponseDto;
+    }
+
+    //@ExceptionHandler({IllegalArgumentException.class,Exception.class})
+    public ResponseEntity<String> handleException(Exception e){
+        return new ResponseEntity<>("kuch gadbad hogaya", HttpStatus.NOT_FOUND);
     }
 
 }
