@@ -1,17 +1,19 @@
 package com.example.proxyservice.services;
 
 import com.example.proxyservice.models.Product;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.web.client.RestTemplateBuilder;
+import com.example.proxyservice.repository.ProductRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-public class ProductService implements IProductService {
+public class SelfProductService implements IProductService {
 
-    @Autowired
-    private RestTemplateBuilder restTemplateBuilder;
+    private ProductRepository productRepository;
+
+    public SelfProductService(ProductRepository productRepository){
+        this.productRepository = productRepository;
+    }
 
     @Override
     public List<Product> getProducts() {
@@ -25,7 +27,8 @@ public class ProductService implements IProductService {
 
     @Override
     public Product createProduct(Product product) {
-        return null;
+        Product product1 = productRepository.save(product);
+        return product1;
     }
 
     @Override

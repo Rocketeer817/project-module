@@ -4,10 +4,11 @@ import com.example.proxyservice.dtos.ProductRequestDto;
 import com.example.proxyservice.dtos.ProductResponseDto;
 import com.example.proxyservice.models.Categories;
 import com.example.proxyservice.models.Product;
-import com.example.proxyservice.services.FakeProductStoreService;
 import com.example.proxyservice.services.IProductService;
+import com.example.proxyservice.services.SelfProductService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,8 +20,8 @@ public class ProductController {
 
     private IProductService productService;
 
-    public ProductController(FakeProductStoreService productService){
-        this.productService = productService;
+    public ProductController(SelfProductService selfProductService){
+        this.productService = selfProductService;
     }
 
     @GetMapping("")
@@ -70,16 +71,25 @@ public class ProductController {
         }
     }
 
-    private Product getProduct(ProductRequestDto productRequestDto) {
-        Product product =  new Product() {
-            {
-                setTitle(productRequestDto.getTitle());
-                setPrice(productRequestDto.getPrice());
-                setDescription(productRequestDto.getDescription());
-                setImage(productRequestDto.getImage());
-            }
-        };
+    private Product getProduct(ProductRequestDto productRequestDto)
+    {
+        //Initializing like this is not creating a Product object for some reason.
+        // It is creating a ProductController$1 class seemingly an anonymous object.
+//        Product product =  new Product() {
+//            {
+//                setTitle(productRequestDto.getTitle());
+//                setPrice(productRequestDto.getPrice());
+//                setDescription(productRequestDto.getDescription());
+//                setImage(productRequestDto.getImage());
+//            }
+//        };
 
+        //Use this for setting all properties.
+        Product product = new Product();
+        product.setTitle(productRequestDto.getTitle());
+        product.setPrice(productRequestDto.getPrice());
+        product.setDescription(productRequestDto.getDescription());
+        product.setImage(productRequestDto.getImage());
         Categories category = new Categories();
         category.setName(productRequestDto.getCategory());
         product.setCategory(category);
@@ -88,21 +98,19 @@ public class ProductController {
     }
 
     private ProductResponseDto getProductDto(Product product){
-        ProductResponseDto productResponseDto = new ProductResponseDto(){
-            {
-                setId(product.getId());
-                setTitle(product.getTitle());
-                setPrice(product.getPrice());
-                setDescription(product.getDescription());
-                setImage(product.getImage());
-                setCategory(product.getCategory().getName());
-            }
-        };
-        return productResponseDto;
+        ProductResponseDto productResponseDto1 = new ProductResponseDto();
+        productResponseDto1.setId(product.getId());
+        productResponseDto1.setTitle(product.getTitle());
+        productResponseDto1.setPrice(product.getPrice());
+        productResponseDto1.setDescription(product.getDescription());
+        productResponseDto1.setImage(product.getImage());
+        productResponseDto1.setCategory(product.getCategory().getName());
+        return productResponseDto1;
     }
 
     @ExceptionHandler({IllegalArgumentException.class,Exception.class})
     public ResponseEntity<String> handleException(Exception e){
+        System.out.println(e);
         return new ResponseEntity<>("kuch gadbad hogaya", HttpStatus.NOT_FOUND);
     }
 

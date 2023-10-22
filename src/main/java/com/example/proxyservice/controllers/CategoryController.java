@@ -4,6 +4,7 @@ import com.example.proxyservice.dtos.CategoryDto;
 import com.example.proxyservice.dtos.ProductResponseDto;
 import com.example.proxyservice.models.Product;
 import com.example.proxyservice.services.FakeStoreCategoryService;
+import com.example.proxyservice.services.ICategoryService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -11,7 +12,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/products/categories")
 public class CategoryController {
-    private FakeStoreCategoryService fakeStoreCategoryService;
+    private ICategoryService fakeStoreCategoryService;
     public CategoryController(FakeStoreCategoryService fakeStoreCategoryService){
         this.fakeStoreCategoryService = fakeStoreCategoryService;
     }
