@@ -5,6 +5,7 @@ import com.example.proxyservice.repository.ProductRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class SelfProductService implements IProductService {
@@ -17,12 +18,13 @@ public class SelfProductService implements IProductService {
 
     @Override
     public List<Product> getProducts() {
-        return null;
+        return productRepository.findAll();
+
     }
 
     @Override
     public Product getProductById(Long id) {
-        return null;
+        return productRepository.findById(id).get();
     }
 
     @Override
@@ -38,12 +40,21 @@ public class SelfProductService implements IProductService {
 
     @Override
     public Product replaceProduct(Long productId, Product product) {
-        return null;
+        product.setId(productId);
+        return productRepository.save(product);
     }
 
     @Override
     public Product deleteProduct(Long id) {
-        return null;
+        Optional<Product> product = productRepository.findById(id);
+        if(product.isEmpty()){
+            System.out.println("No such product");
+            return null;
+        }
+        else{
+            productRepository.deleteById(id);
+        }
+        return product.get();
     }
 
 //    @Override

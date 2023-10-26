@@ -1,9 +1,9 @@
 package com.example.proxyservice.services;
 
 import com.example.proxyservice.models.Product;
-import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface IProductService {
     List<Product> getProducts();

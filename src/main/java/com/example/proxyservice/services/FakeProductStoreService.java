@@ -2,13 +2,13 @@ package com.example.proxyservice.services;
 
 import com.example.proxyservice.clients.FakeStore.client.FakeStoreProductClient;
 import com.example.proxyservice.clients.FakeStore.dto.FakeStoreProductDto;
-import com.example.proxyservice.models.Categories;
 import com.example.proxyservice.models.Product;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClientException;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class FakeProductStoreService implements IProductService{

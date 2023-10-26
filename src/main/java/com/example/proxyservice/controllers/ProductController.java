@@ -84,7 +84,7 @@ public class ProductController {
 //            }
 //        };
 
-        //Use this for setting all properties.
+        //Use this for converting one dto to entity
         Product product = new Product();
         product.setTitle(productRequestDto.getTitle());
         product.setPrice(productRequestDto.getPrice());
