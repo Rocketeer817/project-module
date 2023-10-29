@@ -2,6 +2,7 @@ package com.example.proxyservice.models;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.ManyToOne;
 import lombok.Getter;
 import lombok.Setter;
@@ -16,7 +17,7 @@ public class Product extends BaseModel{
     private double price;
     private String description;
     private String brand;
-    @ManyToOne(cascade=CascadeType.ALL)
+    @ManyToOne(cascade=CascadeType.MERGE,fetch = FetchType.LAZY)
     private Categories category;
     private String image;
 }

@@ -1,6 +1,7 @@
 package com.example.proxyservice.models;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.OneToMany;
 import lombok.Getter;
 import lombok.Setter;
@@ -18,7 +19,6 @@ public class Categories extends BaseModel{
     //1 cat -> many products
     //1 cat <- 1 product
     //1 : M
-    @OneToMany(mappedBy = "category")
-    @Fetch(FetchMode.SELECT)
+    @OneToMany(mappedBy = "category",fetch = FetchType.LAZY)
     private List<Product> productList;
 }
