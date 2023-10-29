@@ -108,7 +108,7 @@ public class ProductController {
         return productResponseDto1;
     }
 
-    @ExceptionHandler({IllegalArgumentException.class,Exception.class})
+    //@ExceptionHandler({IllegalArgumentException.class,Exception.class})
     public ResponseEntity<String> handleException(Exception e){
         System.out.println(e);
         return new ResponseEntity<>("kuch gadbad hogaya", HttpStatus.NOT_FOUND);

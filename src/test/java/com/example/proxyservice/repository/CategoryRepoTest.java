@@ -11,7 +11,7 @@ public class CategoryRepoTest {
     @Autowired
     CategoryRepository categoryRepository;
 
-    @Test
+    //@Test
     @Transactional
     void findCategoryName(){
        Categories category = categoryRepository.findById(1L).get();

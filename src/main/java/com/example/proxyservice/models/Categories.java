@@ -19,6 +19,6 @@ public class Categories extends BaseModel{
     //1 cat -> many products
     //1 cat <- 1 product
     //1 : M
-    @OneToMany(mappedBy = "category",fetch = FetchType.LAZY)
+    @OneToMany( mappedBy = "category")
     private List<Product> productList;
 }
