@@ -17,4 +17,6 @@ public interface IProductService {
     Product replaceProduct(Long productId, Product product);
 
     Product deleteProduct(Long id);
+
+    List<Product> getAllProductsSortedById();
 }

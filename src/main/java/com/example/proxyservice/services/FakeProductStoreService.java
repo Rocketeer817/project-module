@@ -71,5 +71,15 @@ public class FakeProductStoreService implements IProductService{
         }
     }
 
+    @Override
+    public List<Product> getAllProductsSortedById() {
+        List<FakeStoreProductDto> fakeStoreProductDtos =  fakeStoreProductClient.getAllProductsSortedById();
+        List<Product> products = new ArrayList<>();
+        for(FakeStoreProductDto fakeStoreProductDto : fakeStoreProductDtos){
+            products.add(fakeStoreDtoConversions.getProduct(fakeStoreProductDto));
+        }
+        return products;
+    }
+
 
 }

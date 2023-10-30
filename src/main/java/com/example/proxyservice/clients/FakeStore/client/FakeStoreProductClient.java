@@ -29,6 +29,12 @@ public class FakeStoreProductClient {
 
     }
 
+    public List<FakeStoreProductDto> getAllProductsSortedById(){
+
+        FakeStoreProductDto[] productDtos = restTemplateBuilder.build().getForObject("https://fakestoreapi.com/products?sort=desc", FakeStoreProductDto[].class);
+        return Arrays.asList(productDtos);
+    }
+
     public FakeStoreProductDto getSingleProduct(long id){
         return restTemplateBuilder.build().getForEntity("https://fakestoreapi.com/products/{0}", FakeStoreProductDto.class,id).getBody();
     }
