@@ -35,7 +35,31 @@ public class SelfProductService implements IProductService {
 
     @Override
     public Product updateProduct(Long productId, Product product) {
-        return null;
+        Optional<Product> product1 = productRepository.findById(productId);
+        if(product1.isEmpty()){
+            System.out.println("No such product");
+            return null;
+        }
+        else{
+            product.setId(productId);
+            if(product.getDescription() == null){
+                product.setDescription(product1.get().getDescription());
+            }
+            if(product.getPrice()==0){
+                product.setPrice(product1.get().getPrice());
+            }
+            if(product.getCategory() == null){
+                product.setCategory(product1.get().getCategory());
+            }
+            if(product.getTitle() == null){
+                product.setTitle(product1.get().getTitle());
+            }
+            if(product.getImage() == null){
+                product.setImage(product1.get().getImage());
+            }
+            productRepository.save(product);
+        }
+        return product;
     }
 
     @Override
