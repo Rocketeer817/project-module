@@ -20,4 +20,6 @@ public class Product extends BaseModel{
     @ManyToOne(cascade=CascadeType.MERGE,fetch = FetchType.LAZY)
     private Categories category;
     private String image;
+    private int quantity;
+    private double rating;
 }
