@@ -6,6 +6,9 @@ import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.dao.InvalidDataAccessApiUsageException;
+
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @SpringBootTest
 public class ProductRepoTest {
@@ -30,6 +33,16 @@ public class ProductRepoTest {
         product.setDescription("Exclusive Apple product");
         product.setPrice(1000);
         productRepository.save(product);
+    }
+
+    @Test
+    @Transactional
+    void savenullProduct(){
+        Product product =null;
+
+        assertThrows(InvalidDataAccessApiUsageException.class,()->productRepository.save(product));
+
+
     }
 
 

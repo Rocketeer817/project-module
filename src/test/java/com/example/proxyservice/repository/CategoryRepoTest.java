@@ -1,15 +1,23 @@
 package com.example.proxyservice.repository;
 
 import com.example.proxyservice.models.Categories;
+import com.example.proxyservice.models.Product;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 @SpringBootTest
 public class CategoryRepoTest {
     @Autowired
     CategoryRepository categoryRepository;
+    @Autowired
+    ProductRepository productRepository;
 
     @Test
     @Transactional
@@ -67,7 +75,7 @@ public class CategoryRepoTest {
 
     @Test
     @Transactional
-    void updaterCategoryById(){
+    void updateCategoryById(){
         //Arrange
         Categories categories = new Categories();
         categories.setName("Test");
@@ -85,6 +93,38 @@ public class CategoryRepoTest {
         //Assert
         assert(category.getName().equals("Test1"));
         assert(category.getDescription().equals("Test1"));
+    }
+
+    @Test
+    @Transactional
+    void findAllProductsOfACategory(){
+        //Arrange
+        Categories categories = new Categories();
+        categories.setName("Test");
+        categories.setDescription("Test");
+        categoryRepository.save(categories);
+
+        Product product = new Product();
+        product.setTitle("Iphone 15 pro");
+        product.setCategory(categories);
+        product.setDescription("Exclusive Apple product");
+        product.setPrice(1250);
+
+        List<Product> productList = new ArrayList<>();
+        productList.add(product);
+        categories.setProductList(productList);
+
+        productRepository.save(product);
+
+        long id = categories.getId();
+
+        //Act
+        Categories category = categoryRepository.findById(id).get();
+
+        //Assert
+        List<Product> productList2 = category.getProductList();
+        assertNotNull(productList2);
+        assert(productList2.size() == 1);
     }
 
 

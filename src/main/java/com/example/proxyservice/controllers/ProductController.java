@@ -20,7 +20,8 @@ public class ProductController {
 
     private IProductService productService;
 
-    public ProductController(SelfProductService selfProductService){
+    public ProductController(IProductService selfProductService){
+
         this.productService = selfProductService;
     }
 
