@@ -10,6 +10,7 @@ public class ExceptionAdvice {
 
     @ExceptionHandler({IllegalArgumentException.class,Exception.class})
     public ResponseEntity<String> handleException(Exception e){
+        System.out.println(e);
         return new ResponseEntity<>("We will be back in a short time", HttpStatus.NOT_FOUND);
     }
 }

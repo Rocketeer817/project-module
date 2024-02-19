@@ -2,16 +2,24 @@ package com.example.proxyservice.controllers;
 
 import com.example.proxyservice.dtos.ProductRequestDto;
 import com.example.proxyservice.dtos.ProductResponseDto;
+import com.example.proxyservice.exceptions.InvalidAuthorizationException;
 import com.example.proxyservice.models.Categories;
 import com.example.proxyservice.models.Product;
+import com.example.proxyservice.security.ITokenValidator;
+import com.example.proxyservice.security.JwtClaim;
+import com.example.proxyservice.security.TokenValidator;
 import com.example.proxyservice.services.IProductService;
 import com.example.proxyservice.services.SelfProductService;
+import jakarta.annotation.Nullable;
+import org.aspectj.apache.bcel.classfile.Module;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController
@@ -19,10 +27,12 @@ import java.util.stream.Collectors;
 public class ProductController {
 
     private IProductService productService;
+    private ITokenValidator tokenValidator;
 
-    public ProductController(IProductService selfProductService){
+    public ProductController(IProductService selfProductService, ITokenValidator tokenValidator){
 
         this.productService = selfProductService;
+        this.tokenValidator = tokenValidator;
     }
 
     @GetMapping("")
@@ -36,9 +46,10 @@ public class ProductController {
     }
 
     @GetMapping("/{productId}")
-    public ResponseEntity<ProductResponseDto> getSingleProduct(@PathVariable("productId") Long productId)
+    //@Nullable @RequestHeader("Authorization") String authToken
+    public ResponseEntity<ProductResponseDto> getSingleProduct(@PathVariable("productId") Long productId) throws InvalidAuthorizationException
     {
-
+        //JwtClaim jwtClaim = validateToken(authToken);
         Product product = productService.getProductById(productId);
         return new ResponseEntity<>(getProductDto(product), HttpStatus.OK);
     }
@@ -113,6 +124,15 @@ public class ProductController {
     public ResponseEntity<String> handleException(Exception e){
         System.out.println(e);
         return new ResponseEntity<>("kuch gadbad hogaya", HttpStatus.NOT_FOUND);
+    }
+
+    private JwtClaim validateToken(String token,long userID) throws InvalidAuthorizationException
+    {
+        Optional<JwtClaim> jwtClaim = tokenValidator.validateToken(token,userID);
+        if(jwtClaim.isEmpty()){
+            throw new InvalidAuthorizationException("Invalid token");
+        }
+        return jwtClaim.get();
     }
 
 }

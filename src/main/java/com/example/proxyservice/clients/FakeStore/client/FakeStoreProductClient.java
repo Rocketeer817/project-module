@@ -24,7 +24,7 @@ public class FakeStoreProductClient {
     }
 
     public List<FakeStoreProductDto> getAllProducts(){
-        FakeStoreProductDto[] productDtos= restTemplateBuilder.build().getForObject("https://fakestoreapi.com/products", FakeStoreProductDto[].class);
+        FakeStoreProductDto[] productDtos = restTemplateBuilder.build().getForObject("https://fakestoreapi.com/products", FakeStoreProductDto[].class);
         return Arrays.asList(productDtos);
 
     }
