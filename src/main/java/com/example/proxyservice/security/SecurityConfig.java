@@ -28,6 +28,7 @@ public class SecurityConfig {
         http
                 .authorizeHttpRequests((authorize) -> authorize
                         .requestMatchers("/*").permitAll()
+                        .anyRequest().permitAll()
 
                 )
                 //.oauth2ResourceServer((oauth2) -> oauth2.jwt(Customizer.withDefaults()))
@@ -58,3 +59,23 @@ public class SecurityConfig {
 //        return http.build();
 //    }
 }
+
+
+//@Configuration
+////@EnableElasticsearchRepositories(considerNestedRepositories = true, enableDefaultTransactions = true)
+////@EnableElasticsearchRepositories(basePackages = "com.example.proxyservice.repository")
+////@ComponentScan(basePackages = { "com.example.proxyservice.services" })
+////@EntityScan(basePackages = {"com.example.proxyservice.models"})
+//public class ElasticSearchConfig extends AbstractElasticsearchConfiguration {
+//
+//    @Bean
+//    @Override
+//    public RestHighLevelClient elasticsearchClient() {
+//        ClientConfiguration clientConfiguration = ClientConfiguration.builder()
+//                .connectedTo("localhost:9200")
+//                .build();
+//
+//        return RestClients.create(clientConfiguration)
+//                .rest();
+//    }
+//}

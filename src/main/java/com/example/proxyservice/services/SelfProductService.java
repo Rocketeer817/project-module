@@ -2,6 +2,7 @@ package com.example.proxyservice.services;
 
 import com.example.proxyservice.models.Product;
 import com.example.proxyservice.repository.ProductRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 
@@ -12,11 +13,12 @@ import java.util.Optional;
 @Service
 public class SelfProductService implements IProductService {
 
+    @Autowired
     private ProductRepository productRepository;
 
-    public SelfProductService(ProductRepository productRepository){
-        this.productRepository = productRepository;
-    }
+
+    //private ProductElasticSearchRepository productElasticSearchRepository;
+
 
     @Override
     public List<Product> getProducts() {
@@ -32,6 +34,7 @@ public class SelfProductService implements IProductService {
     @Override
     public Product createProduct(Product product) {
         Product product1 = productRepository.save(product);
+//        productElasticSearchRepository.save(product1);
         return product1;
     }
 
@@ -60,6 +63,7 @@ public class SelfProductService implements IProductService {
                 product.setImage(product1.get().getImage());
             }
             productRepository.save(product);
+//            productElasticSearchRepository.save(product);
         }
         return product;
     }
@@ -79,6 +83,7 @@ public class SelfProductService implements IProductService {
         }
         else{
             productRepository.deleteById(id);
+//            productElasticSearchRepository.delete(product.get());
         }
         return product.get();
     }

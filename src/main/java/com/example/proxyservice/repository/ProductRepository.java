@@ -12,4 +12,6 @@ import java.util.List;
 public interface ProductRepository extends JpaRepository<Product,Long> {
     List<Product> findAllByOrderByIdDesc();
     Page<Product> findByTitleEquals(String title, Pageable pageable);
+
+    Page<Product> findByTitleContaining(String title, Pageable pageable);
 }
